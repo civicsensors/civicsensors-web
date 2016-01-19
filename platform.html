@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Civic Sensors is a project providing open and public APIs to proximity beacon and sensor data for education, science, and civic purposes.">
+    <meta name="author" content="civicsensors">
+    <title>Civic Sensors - Open Beacon and Sensor Data</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/freelancer.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body id="page-top" class="index">
+
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html#page-top">Civic Sensors</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="hidden">
+                    <a href="index.html#page-top"></a>
+                </li>
+                <li class="page-scroll">
+                    <a href="index.html#about">About</a>
+                </li>
+                <li class="page-scroll">
+                    <a href="index.html#how">How</a>
+                </li>
+                <li class="page-scroll">
+                    <a href="platform.html">Platform</a>
+                </li>
+                <li class="page-scroll">
+                    <a href="index.html#contact">Contact</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+
+<section id="how" class="how">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 ">
+                <h3>Civic Sensors Platform</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 ">
+                <p>
+                    The Civic Sensors platform is split into two main parts, the acquisition of data being published by devices
+                    or applications, and the retrieval of data, through various types of searches and aggregations. This document details
+                    a high level process for these approaches, although detailed developer documentation should be used for
+                    integration purposes.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 ">
+                <h4>Core Concepts</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 ">
+                <p>
+                    The Civic Sensors platform handles two main types of objects, a sensor and a beacon. Each of these has
+                    different types of characteristics, and is interacted with in a slightly different manner.
+                </p>
+                <p style="font-weight: bold;">
+                    Sensors
+                </p>
+                <p>
+                    A sensor is typically a small, embedded devices that is capable of reading one or more values about the
+                    environment in which it is placed, and to provide this data to a data service or application for
+                    processing. Sensors may be integrated in complex systems (vehicles, structures) or may be independent (water level,
+                    temperature) and operating in an isolated manner.
+                </p>
+                <p style="text-align: center;">
+                    <img width="15%" src="images/diagrams/cs_sensorreadings.png"/>
+                </p>
+                <p>
+                    Sensors will generally report one or more values to a service of some sort, and the frequency of reporting varies
+                    based on the type of sensor and the need for the data. Environmental sensors may send data infrequently, based on
+                    time or specific changes that pass a specific threshold. Complex systems, such as vehicles, will typically use sensor data
+                    thousands of times a minute to ensure proper functioning.
+                </p>
+                <p style="font-weight: bold;">
+                    Beacons
+                </p>
+                <p>
+                    Beacons are small devices using Bluetooth Low Energy (BLE) for broadcasting a unique identifier to
+                    any nearby devices. These devices do not typically have internet access on their own, but instead
+                    act as a data source for apps or other BLE-enabled devices to interact with.
+                </p>
+                <p style="text-align: center;">
+                    <img width="25%" src="images/diagrams/cs_beaconbroadcast.png"/>
+                </p>
+                <p>
+                    There are several Bluetooth Beacon standards, including iBeacon and Eddystone, each with different characteristics
+                    and advantages/disadvantages. A basic consideration is that each beacon has a unique identifier, and applications
+                    are able to use this identifier to trigger actions, to retrieve information, and to provide context to a user. Although
+                    beacons provide location information, as proximity and distance to a beacon, the beacons themselves are not typically
+                    GPS enabled and for absolute positioning, an application would need to correlate the beacon with a spatial coordinate.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 ">
+                <h4>Publishing Sensor Data</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 ">
+                <p>
+                    In order to publish sensor data to the platform, a sensor must first be registered with the system. Although
+                    many platforms allow on the fly creation of sensors, with Civic Sensors a basic registration and creation process
+                    ensures that some contextual data is available about the sensor, which is useful for other platform users.
+                    Understanding the responsible party for a sensor, the type and intent of the data, and other factors
+                    is essential to ensuring a wide community is able to take advantage of the information.
+                </p>
+                <p style="text-align: center;">
+                    <img width="80%" src="images/diagrams/cs_sensorpub.png"/>
+                </p>
+                <p>
+                    The publishing process is rather simple, with a sensor generating an update packet with one or more reading
+                    values being submitted to the server. A sensor may not submit readings for all sensor values, if it determines
+                    that some have not changed, in order to minimize transmission overhead. These published values are identified
+                    by a key or name field, and a sensor is free to use the standard fields on the platform, or to generate new fields
+                    as needed.
+                </p>
+                <p>
+                    In order to publish, a sensor device will take the embedded identifier received when registering the sensor, and will
+                    use this as a publication identifier. Data may be published through either a REST or MQTT interface, depending on
+                    device preferences, and new data is accepted not more than once per minute. Civic Sensors is not designed for extremely
+                    high volume data processing, and is intended to provide a broader range of data to the open community, and high volume
+                    data is not typically required for this.
+                </p>
+                <p>
+                    Once data has been published in the platform, the update will be visible in the sensor details page, showing
+                    last updated values, historical trends, and other characteristics about both the sensor and the readings received.
+                    Remember, sensor data is public and available for use by any other users on the platform, so sensitive data or high
+                    volume data should be published elsewhere for additional protection.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 ">
+                <h4>Managing Beacon Data</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 ">
+                <p>
+                    Beacons are not published into the system, and are managed via the user interface to define a beacon and the
+                    context or location it represents. When a beacon is encountered by a mobile application (or other device) it may
+                    use the REST API to retrieve information about the beacon, and to understand what the beacon represents.
+                </p>
+                <p>
+                    A beacon may contain content references to notify the user about additional information about a given area.
+                    For example, a beacon located at a bus stop may alert a device to schedule information, while a beacon
+                    in a park may provide context on a trail, geographic formation, or other details. Beacons may be application-centric
+                    as well, providing content or identifiers for applications to use in specific ways.
+                </p>
+                <p>
+                    One feature of beacons is that applications may be written to watch for beacons passively, which minimizes the power
+                    usage while providing useful context to the world around the user. Users have proximity detection without the overhead
+                    and power drain of performing GPS positioning.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Footer -->
+<footer class="text-center">
+    <div class="footer-above">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col col-md-12" style="text-align: center;">
+                    <p>The Civic Sensors project is supported directly by Tactical Edge.</p>
+                    <a target="_new" href="http://tacticaledge.us/"><img src="http://www.tacticaledge.us/wp-content/uploads/2014/09/logo.png" alt="Tactical Edge"/></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-below">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+<div class="scroll-top page-scroll visible-xs visible-sm">
+    <a class="btn btn-primary" href="#page-top">
+        <i class="fa fa-chevron-up"></i>
+    </a>
+</div>
+
+<!-- jQuery -->
+<script src="js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="js/freelancer.js"></script>
+
+</body>
+
+</html>
